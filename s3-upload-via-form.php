@@ -14,7 +14,7 @@
 	
 	use Aws\S3\S3Client;
 	use Aws\S3\Exception\S3Exception;
-
+if(isset($_POST['save'])){
 	// AWS Info
 	$bucketName = 'SUB_YOUR_BUCKET_NAME_IN';
 	$IAM_KEY = 'SUB_YOUR_IAM_KEY_IN';
@@ -42,13 +42,13 @@
 
 	
 	// For this, I would generate a unqiue random string for the key name. But you can do whatever.
-	$keyName = 'test_example/' . basename($_FILES["fileToUpload"]['tmp_name']);
+	$keyName = 'test_example/' . basename($_FILES["file"]['name']);
 	$pathInS3 = 'https://s3.us-east-2.amazonaws.com/' . $bucketName . '/' . $keyName;
 
 	// Add it to S3
 	try {
 		// Uploaded:
-		$file = $_FILES["fileToUpload"]['tmp_name'];
+		$file = $_FILES["file"]['tmp_name'];
 
 		$s3->putObject(
 			array(
@@ -70,4 +70,22 @@
 
 	// Now that you have it working, I recommend adding some checks on the files.
 	// Example: Max size, allowed file types, etc.
+}
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>File Upload To S3</title>
+</head>
+<body>
+   <div>
+     <form action="" method="post" enctype="multipart/form-data">
+	    <input type="file" name="file" id="file">
+	 	<input type="submit" value="Save" name="save">
+	 </form>
+   </div>
+</body>
+</html>
